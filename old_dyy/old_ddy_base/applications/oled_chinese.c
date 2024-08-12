@@ -1,0 +1,201 @@
+#include "oled_chinese.h"
+BatVal _BatVal={0};
+/**************************************************************/
+/*供电状态*/
+static inline void oled_chinese_GDZT(void)
+{
+	OLED_ShowCHinese(0,0,5);
+	OLED_ShowCHinese(16,0,0);
+	OLED_ShowCHinese(32,0,2);
+	OLED_ShowCHinese(48,0,3);
+	OLED_ShowChar(64,0,':',16);
+	if(_BatVal.Bat_GDZT==BAT_GDZT_DC)
+	{
+		/*电池供电*/
+		OLED_ShowCHinese(96,0,0);
+		OLED_ShowCHinese(112,0,1);
+	}
+	else
+	{
+		OLED_ShowCHinese(96,0,6);
+		OLED_ShowCHinese(112,0,8);
+	}
+}
+/*电池状态*/
+static inline void oled_chinese_DCZT(void)
+{
+	OLED_ShowCHinese(0,2,0);
+	OLED_ShowCHinese(16,2,1);
+	OLED_ShowCHinese(32,2,2);
+	OLED_ShowCHinese(48,2,3);
+	OLED_ShowChar(64,2,':',16);
+	if(_BatVal.Bat_GDZT==BAT_GDZT_DC)
+	{
+		/*放电*/
+		OLED_ShowCHinese(96,2,9);
+		OLED_ShowCHinese(112,2,0);
+	}
+	else
+	{
+		OLED_ShowCHinese(96,2,10);
+		OLED_ShowCHinese(112,2,0);
+		
+	}
+}
+/*电池电压*/
+static inline void oled_chinese_DCDY(void)
+{
+	OLED_ShowCHinese(0,4,0);
+	OLED_ShowCHinese(16,4,1);
+	OLED_ShowCHinese(32,4,0);
+	OLED_ShowCHinese(48,4,4);
+	OLED_ShowChar(64,4,':',16);
+	OLED_ShowNum(88,4,_BatVal.Bat_voltage,4,16);
+	OLED_ShowChar(120,4,'V',16);
+}
+/*充放电电流*/
+static inline void oled_chinese_CFDDL(void)
+{
+	if(_BatVal.Bat_GDZT==BAT_GDZT_DC)
+	{
+		/*电池供电:放电电流*/
+		OLED_ShowCHinese(0,6,9);
+		OLED_ShowCHinese(16,6,0);
+		OLED_ShowCHinese(32,6,0);
+		OLED_ShowCHinese(48,6,8);
+		OLED_ShowChar(64,6,':',16);
+		OLED_ShowNum(80,6,_BatVal.Bat_FD_DL,4,16);
+	}
+	else
+	{
+		/*交流供电:充电电流*/
+		OLED_ShowCHinese(0,6,10);
+		OLED_ShowCHinese(16,6,0);
+		OLED_ShowCHinese(32,6,0);
+		OLED_ShowCHinese(48,6,8);
+		OLED_ShowChar(64,6,':',16);
+		OLED_ShowNum(80,6,_BatVal.Bat_CD_DL,4,16);
+	}
+	OLED_ShowChar(112,6,'M',16);
+	OLED_ShowChar(120,6,'A',16);
+}
+/*箱体湿度*/
+static inline void oled_chinese_XTSD(void)
+{
+	OLED_ShowCHinese(0,0,22);
+	OLED_ShowCHinese(16,0,23);
+	OLED_ShowCHinese(32,0,24);
+	OLED_ShowCHinese(48,0,11);
+	OLED_ShowChar(64,0,':',16);
+	OLED_ShowNum(88,0,_dth11_data._hum_H,2,16);
+	OLED_ShowChar(104,0,'%',16);
+	OLED_ShowChar(112,0,'R',16);
+	OLED_ShowChar(120,0,'H',16);
+}
+/*箱体温度*/
+static inline void oled_chinese_XTWD(void)
+{
+	OLED_ShowCHinese(0,2,22);
+	OLED_ShowCHinese(16,2,23);
+	OLED_ShowCHinese(32,2,12);
+	OLED_ShowCHinese(48,2,11);
+	OLED_ShowChar(64,2,':',16);
+	OLED_ShowNum(96,2,_dth11_data._temp_H,2,16);
+	OLED_ShowCHinese(112,2,13);
+}
+/*电池温度*/
+static inline void oled_chinese_DCWD(void)
+{
+	OLED_ShowCHinese(0,4,0);
+	OLED_ShowCHinese(16,4,1);
+	OLED_ShowCHinese(32,4,12);
+	OLED_ShowCHinese(48,4,11);
+	OLED_ShowChar(64,4,':',16);
+	OLED_ShowNum(96,4,_BatVal.Bat_TEMP,2,16);
+	OLED_ShowCHinese(112,4,13);
+}
+/*电池电量*/
+static inline void oled_chinese_DCDL(void)
+{
+	OLED_ShowCHinese(0,6,0);
+	OLED_ShowCHinese(16,6,1);
+	OLED_ShowCHinese(32,6,0);
+	OLED_ShowCHinese(48,6,14);
+	OLED_ShowChar(64,6,':',16);
+	OLED_ShowNum(80,6,_BatVal.Bat_DL,4,16);
+	OLED_ShowCHinese(112,6,15);
+}
+/**************************************************************/
+void oled_SD(void)
+{
+	OLED_Clear();
+	/*主板版本号：v0.11*/
+	OLED_ShowCHinese(0,0,16);
+	OLED_ShowCHinese(16,0,17);
+	OLED_ShowCHinese(32,0,18);
+	OLED_ShowCHinese(48,0,19);
+	OLED_ShowCHinese(64,0,20);
+	OLED_ShowChar(80,0,':',16);
+	OLED_ShowChar(88,0,'v',16);
+	OLED_ShowChar(96,0,'0',16);
+	OLED_ShowChar(104,0,'.',16);
+	OLED_ShowChar(112,0,'1',16);
+	OLED_ShowChar(120,0,'1',16);
+	/*日期*/
+	OLED_ShowChar(24,2,'2',16);
+	OLED_ShowChar(32,2,'0',16);
+	OLED_ShowChar(40,2,'2',16);
+	OLED_ShowChar(48,2,'4',16);
+	OLED_ShowChar(56,2,'.',16);
+	OLED_ShowChar(64,2,'0',16);
+	OLED_ShowChar(72,2,'8',16);
+	OLED_ShowChar(80,2,'.',16);
+	OLED_ShowChar(88,2,'0',16);
+	OLED_ShowChar(96,2,'3',16);
+	/*底板版本号：v0.11*/
+	OLED_ShowCHinese(0,4,21);
+	OLED_ShowCHinese(16,4,17);
+	OLED_ShowCHinese(32,4,18);
+	OLED_ShowCHinese(48,4,19);
+	OLED_ShowCHinese(64,4,20);
+	OLED_ShowChar(80,4,':',16);
+	OLED_ShowChar(88,4,'v',16);
+	OLED_ShowChar(96,4,'0',16);
+	OLED_ShowChar(104,4,'.',16);
+	OLED_ShowChar(112,4,'2',16);
+	OLED_ShowChar(120,4,'1',16);
+	/*日期*/
+	OLED_ShowChar(24,6,'2',16);
+	OLED_ShowChar(32,6,'0',16);
+	OLED_ShowChar(40,6,'2',16);
+	OLED_ShowChar(48,6,'4',16);
+	OLED_ShowChar(56,6,'.',16);
+	OLED_ShowChar(64,6,'0',16);
+	OLED_ShowChar(72,6,'8',16);
+	OLED_ShowChar(80,6,'.',16);
+	OLED_ShowChar(88,6,'0',16);
+	OLED_ShowChar(96,6,'3',16);
+}
+void oled_show_Bat_parm(void)
+{
+	OLED_Clear();
+	/*供电状态*/
+	oled_chinese_GDZT();
+	/*电池状态*/
+	oled_chinese_DCZT();
+	/*电池电压*/
+	oled_chinese_DCDY();
+	/*充放电电流*/
+	oled_chinese_CFDDL();
+	rt_thread_mdelay(1000);
+	OLED_Clear();
+	/*箱体湿度*/
+	oled_chinese_XTSD();
+	/*箱体温度*/
+	oled_chinese_XTWD();
+	/*电池温度*/
+	oled_chinese_DCWD();
+	/*电池电流*/
+	oled_chinese_DCDL();
+	rt_thread_mdelay(1000);
+}
