@@ -1,6 +1,6 @@
 项目名称：具有OTA功能的电源
 项目介绍：远程更新
-项目核心技术：APP基于RTT操作系统，Bootloader基于裸机系统、SPI、FLASH、IWDG、Ymodem协议
+项目核心技术：APP基于RTT操作系统，Bootloader基于裸机系统，Ymodem协议、单片机应用（FLASH、IO、SPI、IWDG、UART）
 产品描述：
 1.此产品核心为远程更新功能已实现。app区具体项目不予公开，上传的APP程序也为测试模块,不在详细介绍。
 2.对于单片机F103C8T6FLASH管理：0x08000000-0x08005000为Bootloader区，后44k为APP区。
