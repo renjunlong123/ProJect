@@ -3,7 +3,7 @@
 项目核心技术：APP基于RTT操作系统，Bootloader基于裸机系统、SPI、FLASH、ADC、IWDG、TIMER、
 	      Ymodem协议等
 产品描述：
-1.此产品app为测试项目，具体项目不予公开与，故不在详细介绍。
+1.此产品app为测试项目，具体项目不予公开，故不在详细介绍。
 2.对于单片机F103C8T6FLASH管理：0x08000000-0x08005000为Bootloader区，后44k为APP区。
 3.b区具有接收新app程序，更新app程序，备份app程序，读取旧app程序，删除app程序，跳转app程序等功能。
   单片机只保存一个b区和一个app区，其余app版本存储于w25Q64。
